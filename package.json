@@ -1,0 +1,34 @@
+{
+  "name": "reaper.js",
+  "version": "0.0.1",
+  "description": "Library to extract content from dynamic web pages",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/avovsya/reaper.js.git"
+  },
+  "keywords": [
+    "scrap",
+    "extract",
+    "web",
+    "dynamic",
+    "content"
+  ],
+  "author": "Artem Vovsia <avovsya@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/avovsya/reaper.js/issues"
+  },
+  "homepage": "https://github.com/avovsya/reaper.js",
+  "devDependencies": {
+    "chai": "^3.4.1",
+    "mocha": "^2.3.4",
+    "sinon": "^1.17.2"
+  }
+}
