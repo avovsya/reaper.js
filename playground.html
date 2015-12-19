@@ -28,7 +28,7 @@
   <script>
     function execRule() {
       var textArea = $("#result #res")[0];
-      var result = JSON.stringify(reaper.extract($, _, ruleCards), null, 2);
+      var result = JSON.stringify(reaper.extract(ruleCards, $), null, 2);
       $("#res").html(result);
       var editor =  CodeMirror.fromTextArea(textArea, { mode: 'javascript' });
     }
@@ -82,7 +82,7 @@
 </head>
 <body>
   <h1 id="title"> Reaper.js playground </h1>
-  <div id="container">
+  <div id="container" contenteditable="true">
     <div class="single-card">
       <h3>Single Card</h3>
       <p>Lorem ipsum dolor sit amet</p>
