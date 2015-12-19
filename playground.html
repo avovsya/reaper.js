@@ -1,0 +1,134 @@
+<html>
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.js"></script>
+    <script src="./lib/reaper.js"></script>
+    <script>
+      var ruleCards = [{
+        ctx: ".card-list li.card",
+        fields: {
+          title: {
+            selector: 'h3'
+          },
+          description: {
+            selector: 'p'
+          },
+          images: [{
+            selector: '.images img',
+            attribute: 'src'
+          }],
+          colors: [{
+            ctx: '.colors span',
+            fields: {
+              css: {
+                selector: '.',
+                attribute: 'style'
+              },
+              css2: {
+                selector: '.',
+                css: 'background-color'
+              },
+              name: {
+                selector: '.'
+              }
+            }
+          }],
+          attributes: [{
+            ctx: '.attributes .attribute',
+            fields: {
+              key: {
+                selector: '.attr-key'
+              },
+              value: {
+                selector: '.attr-value'
+              }
+            }
+          }]
+        }
+      }];
+    </script>
+  </head>
+  <body>
+    <h1 id="#title"> Reaper.js playground </h1>
+    <div class="single-card">
+      <h3>Single Card</h3>
+      <p>Lorem ipsum dolor sit amet</p>
+      <ul class="attributes">
+        <li class="attribute">
+          <div class="attr-key">Key 1</div>
+          <div class="attr-value">Value 1</div>
+        </li>
+      </ul>
+    </div>
+    <div id="cards">
+      <h2>Cards container</h2>
+      <ul class="card-list">
+        <li class="card">
+          <h3>Card Title 3</h3>
+          <p>Lorem ipsum dolor sit amet</p>
+          <div class="images">
+            <img src="img1" />
+            <img src="img2" />
+          </div>
+          <div class="colors">
+            <span class="color" style="background-color: blue">Blue</span>
+            <span class="color" style="background-color: red">Red</span>
+            <span class="color" style="background-color: green">Green</span>
+          </div>
+          <ul class="attributes">
+            <li class="attribute">
+              <div class="attr-key">Key 1</div>
+              <div class="attr-value">Value 1</div>
+            </li>
+          </ul>
+        </li>
+        <li class="card">
+          <h3>Card Title 2</h3>
+          <p>Lorem ipsum dolor sit amet</p>
+          <div class="images">
+            <img src="img1" />
+            <img src="img2" />
+          </div>
+          <div class="colors">
+            <span class="color" style="background-color: blue">Blue</span>
+            <span class="color" style="background-color: red">Red</span>
+            <span class="color" style="background-color: green">Green</span>
+          </div>
+          <ul class="attributes">
+            <li class="attribute">
+              <div class="attr-key">Key 1</div>
+              <div class="attr-value">Value 1</div>
+            </li>
+            <li class="attribute">
+              <div class="attr-key">Key 2</div>
+              <div class="attr-value">Value 2</div>
+            </li>
+          </ul>
+        </li>
+        <li class="card">
+          <h3>Card Title 1</h3>
+          <p>Lorem ipsum dolor sit amet</p>
+          <div class="images">
+            <img src="img1" />
+            <img src="img2" />
+          </div>
+          <div class="colors">
+            <span class="color" style="background-color: black">Black</span>
+            <span class="color" style="background-color: red">Red</span>
+            <span class="color" style="background-color: green">Green</span>
+          </div>
+          <ul class="attributes">
+            <li class="attribute">
+              <div class="attr-key">Key 1</div>
+              <div class="attr-value">Value 1</div>
+            </li>
+            <li class="attribute">
+              <div class="attr-key">Key 2</div>
+              <div class="attr-value">Value 2</div>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>
