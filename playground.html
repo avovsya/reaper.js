@@ -1,55 +1,88 @@
 <html>
-  <head>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.js"></script>
-    <script src="./lib/reaper.js"></script>
-    <script>
-      var ruleCards = [{
+<head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.js"></script>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.9.0/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.9.0/mode/javascript/javascript.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.9.0/codemirror.css">
+
+  <script src="./lib/reaper.js"></script>
+
+  <style>
+    #container {
+        float: left;
+        width: 50%;
+    }
+    #result {
+        float: left;
+        width: 50%;
+    }
+
+    .CodeMirror {
+        height: 100%;
+    }
+  </style>
+
+  <script>
+    function execRule() {
+      var textArea = $("#result #res")[0];
+      var result = JSON.stringify(reaper.extract($, _, ruleCards), null, 2);
+      $("#res").html(result);
+      var editor =  CodeMirror.fromTextArea(textArea, { mode: 'javascript' });
+    }
+    var ruleCards = [{
         ctx: ".card-list li.card",
         fields: {
-          title: {
+        title: {
             selector: 'h3'
-          },
-          description: {
+        },
+        description: {
             selector: 'p'
-          },
-          images: [{
+        },
+        meta: {
+            fields: {
+            attributes: [{
+                ctx: '.attributes .attribute',
+                fields: {
+                key: {
+                    selector: '.attr-key'
+                },
+                value: {
+                    selector: '.attr-value'
+                }
+                }
+            }]
+            }
+        },
+        images: [{
             selector: '.images img',
             attribute: 'src'
-          }],
-          colors: [{
+        }],
+        colors: [{
             ctx: '.colors span',
             fields: {
-              css: {
+            css: {
                 selector: '.',
                 attribute: 'style'
-              },
-              css2: {
+            },
+            css2: {
                 selector: '.',
                 css: 'background-color'
-              },
-              name: {
+            },
+            name: {
                 selector: '.'
-              }
             }
-          }],
-          attributes: [{
-            ctx: '.attributes .attribute',
-            fields: {
-              key: {
-                selector: '.attr-key'
-              },
-              value: {
-                selector: '.attr-value'
-              }
             }
-          }]
+        }],
         }
-      }];
-    </script>
-  </head>
-  <body>
-    <h1 id="#title"> Reaper.js playground </h1>
+    }];
+  </script>
+</head>
+<body>
+  <h1 id="title"> Reaper.js playground </h1>
+  <div id="container">
     <div class="single-card">
       <h3>Single Card</h3>
       <p>Lorem ipsum dolor sit amet</p>
@@ -130,5 +163,16 @@
         </li>
       </ul>
     </div>
-  </body>
+  </div>
+  <div id="playground">
+    <button id="run" onclick="execRule();">Execute rule</button>
+    <div id="result">
+      <textarea id="rule">
+      </textarea>
+      <hr />
+      <textarea id="res">
+      </textarea>
+    </div>
+  </div>
+</body>
 </html>
