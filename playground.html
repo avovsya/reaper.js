@@ -9,80 +9,20 @@
   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.9.0/codemirror.css">
 
   <script src="./lib/reaper.js"></script>
-
   <style>
-    #container {
-        float: left;
-        width: 50%;
-    }
-    #result {
+    .container {
         float: left;
         width: 50%;
     }
 
     .CodeMirror {
-        height: 100%;
+        height: 50%;
     }
   </style>
-
-  <script>
-    function execRule() {
-      var textArea = $("#result #res")[0];
-      var result = JSON.stringify(reaper.extract(ruleCards, $), null, 2);
-      $("#res").html(result);
-      var editor =  CodeMirror.fromTextArea(textArea, { mode: 'javascript' });
-    }
-    var ruleCards = [{
-        ctx: ".card-list li.card",
-        fields: {
-        title: {
-            selector: 'h3'
-        },
-        description: {
-            selector: 'p'
-        },
-        meta: {
-            fields: {
-            attributes: [{
-                ctx: '.attributes .attribute',
-                fields: {
-                key: {
-                    selector: '.attr-key'
-                },
-                value: {
-                    selector: '.attr-value'
-                }
-                }
-            }]
-            }
-        },
-        images: [{
-            selector: '.images img',
-            attribute: 'src'
-        }],
-        colors: [{
-            ctx: '.colors span',
-            fields: {
-            css: {
-                selector: '.',
-                attribute: 'style'
-            },
-            css2: {
-                selector: '.',
-                css: 'background-color'
-            },
-            name: {
-                selector: '.'
-            }
-            }
-        }],
-        }
-    }];
-  </script>
 </head>
 <body>
   <h1 id="title"> Reaper.js playground </h1>
-  <div id="container" contenteditable="true">
+  <div class="container" contenteditable="true">
     <div class="single-card">
       <h3>Single Card</h3>
       <p>Lorem ipsum dolor sit amet</p>
@@ -166,13 +106,96 @@
   </div>
   <div id="playground">
     <button id="run" onclick="execRule();">Execute rule</button>
-    <div id="result">
+    <div class="container">
+      <h3>Rule</h3>
       <textarea id="rule">
       </textarea>
       <hr />
-      <textarea id="res">
+      <h3>Result</h3>
+      <textarea id="result">
       </textarea>
     </div>
   </div>
+
+  <script>
+    var resultEditor;
+    var ruleEditor;
+
+    function execRule() {
+      var rule = JSON.parse(ruleEditor.getValue());
+
+      var result = JSON.stringify(reaper.extract(rule, $), null, 2);
+
+      if (resultEditor) {
+        resultEditor.getDoc().setValue(result);
+      } else {
+        var resultTextArea = $("#result").val(result)[0];
+        resultEditor = CodeMirror.fromTextArea(resultTextArea, {
+          mode: {
+              name: 'javascript',
+              json: true
+          },
+          lineNumbers: true
+        });
+      }
+    }
+
+    var ruleCards = [{
+        ctx: ".card-list li.card",
+        fields: {
+        title: {
+            selector: 'h3'
+        },
+        description: {
+            selector: 'p'
+        },
+        meta: {
+            fields: {
+            attributes: [{
+                ctx: '.attributes .attribute',
+                fields: {
+                key: {
+                    selector: '.attr-key'
+                },
+                value: {
+                    selector: '.attr-value'
+                }
+                }
+            }]
+            }
+        },
+        images: [{
+            selector: '.images img',
+            attribute: 'src'
+        }],
+        colors: [{
+            ctx: '.colors span',
+            fields: {
+            css: {
+                selector: '.',
+                attribute: 'style'
+            },
+            css2: {
+                selector: '.',
+                css: 'background-color'
+            },
+            name: {
+                selector: '.'
+            }
+            }
+        }],
+        }
+    }];
+
+    var ruleTextArea = $("#rule").val(JSON.stringify(ruleCards, null, 2))[0];
+    ruleEditor = CodeMirror.fromTextArea(ruleTextArea, {
+      mode: {
+        name: 'javascript',
+        json: true
+      },
+      lineNumbers: true
+    });
+    execRule();
+  </script>
 </body>
 </html>
