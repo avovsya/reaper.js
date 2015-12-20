@@ -89,4 +89,43 @@ describe('reaper.js', function() {
     var result = reaper.extract(rule, document);
     expect(result).to.deep.equal(expectedResult);
   });
+
+  it('should extract multiple root objects', function() {
+    var rule = [{
+      ctx: '.object',
+      fields: {
+        testField: {
+          selector: '.testField'
+        },
+        testField2: {
+          selector: '.testField2'
+        }
+      }
+    }];
+
+    var expectedResult = [{
+      testField: 'test value 1',
+      testField2: 'foo'
+    }, {
+      testField: 'test value 2',
+      testField2: 'bar'
+    }];
+
+    var document = loadFixture('test1');
+
+    var result = reaper.extract(rule, document);
+    expect(result).to.deep.equal(expectedResult);
+  });
+
+  xit('should extract multiple nested objects', function() {
+  });
+
+  xit('should extract multiple levels of nested objects', function() {
+  });
+
+  xit('should extract value from parent object if field selector set to "."', function() {
+  });
+
+  xit('should extract value from parent object if field selector left empty', function() {
+  });
 });
