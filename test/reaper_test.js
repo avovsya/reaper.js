@@ -117,15 +117,195 @@ describe('reaper.js', function() {
     expect(result).to.deep.equal(expectedResult);
   });
 
-  xit('should extract multiple nested objects', function() {
+  it('should extract multiple levels of nested objects', function() {
+    var rule = {
+      ctx: "#root",
+      fields: {
+        meta: {
+          selector: ".meta"
+        },
+        nested: {
+          ctx: '.nested',
+          fields: {
+            prop: {
+              selector: '.prop'
+            }
+          }
+        }
+      }
+    };
+
+    var expectedResult = {
+      meta: "Meta",
+      nested: {
+        prop: "Prop 1"
+      }
+    };
+
+    var document = loadFixture('test2');
+
+    var result = reaper.extract(rule, document);
+    expect(result).to.deep.equal(expectedResult);
   });
 
-  xit('should extract multiple levels of nested objects', function() {
+  it('should extract multiple nested objects', function() {
+    var rule = [{
+      ctx: ".root",
+      fields: {
+        meta: {
+          selector: ".meta"
+        },
+        nested: {
+          ctx: '.nested',
+          fields: {
+            prop: {
+              selector: '.prop'
+            }
+          }
+        }
+      }
+    }];
+
+    var expectedResult = [{
+      meta: "Meta",
+      nested: {
+        prop: "Prop 1"
+      }
+    }, {
+      meta: "Meta 2",
+      nested: {
+        prop: "Prop 2"
+      }
+    }];
+
+    var document = loadFixture('test2');
+
+    var result = reaper.extract(rule, document);
+    expect(result).to.deep.equal(expectedResult);
   });
 
-  xit('should extract value from parent object if field selector set to "."', function() {
+  it('should extract value from parent object if field selector set to "."', function() {
+    var rule = {
+      ctx: "#parent",
+      fields: {
+        child: {
+          selector: 'span'
+        },
+        parent: {
+          selector: '.'
+        }
+      }
+    };
+
+    var expectedResult = {
+      child: 'Child',
+      parent: '\n    <span>Child</span>\n  '
+    };
+
+    var document = loadFixture('test2');
+
+    var result = reaper.extract(rule, document);
+    expect(result).to.deep.equal(expectedResult);
   });
 
-  xit('should extract value from parent object if field selector left empty', function() {
+  it('should extract value from parent object if field selector left empty', function() {
+    var rule = {
+      ctx: "#parent",
+      fields: {
+        child: {
+          selector: 'span'
+        },
+        parent: {
+        }
+      }
+    };
+
+    var expectedResult = {
+      child: 'Child',
+      parent: '\n    <span>Child</span>\n  '
+    };
+
+    var document = loadFixture('test2');
+
+    var result = reaper.extract(rule, document);
+    expect(result).to.deep.equal(expectedResult);
+  });
+
+  it('should extract element attribute', function () {
+    var rule = {
+        ctx: '.colors span',
+        fields: {
+          color: {
+            attribute: 'data-color'
+          },
+          html: {
+            selector: '.'
+          }
+        }
+    };
+
+    var expectedResult = {
+      color: 'black',
+      html: 'Black'
+    };
+
+    var document = loadFixture('test2');
+
+    var result = reaper.extract(rule, document);
+    expect(result).to.deep.equal(expectedResult);
+  });
+
+  it('should extract attribute for multiple values', function () {
+    var rule = [{
+      ctx: '.colors span',
+      fields: {
+        color: {
+          attribute: 'data-color'
+        },
+        html: {
+          selector: '.'
+        }
+      }
+    }];
+
+    var expectedResult = [{
+      color: 'black',
+      html: 'Black'
+    }, {
+      color: 'red',
+      html: 'Red'
+    }, {
+      color: 'green',
+      html: 'Green'
+    }];
+
+    var document = loadFixture('test2');
+
+    var result = reaper.extract(rule, document);
+    expect(result).to.deep.equal(expectedResult);
+  });
+
+  it('should extract element css property', function () {
+    var rule = {
+      ctx: '.colors span',
+      fields: {
+        cssColor: {
+          css: 'background-color'
+        },
+        html: {
+          selector: '.'
+        }
+      }
+    };
+
+    var expectedResult = {
+      cssColor: '#FFF',
+      html: 'Black'
+    };
+
+    var document = loadFixture('test2');
+
+    var result = reaper.extract(rule, document);
+    expect(result).to.deep.equal(expectedResult);
   });
 });
